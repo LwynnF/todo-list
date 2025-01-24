@@ -10,28 +10,28 @@ test.describe("Todo input", () => {
 				name: "To do list",
 			})
 		).toBeVisible();
-    await expect(page.getByPlaceholder("Add your todo here")).toBeVisible();
-    await expect(page.getByRole("button", {name: "+"})).toBeVisible();
-
+		await expect(page.getByPlaceholder("Add your todo here")).toBeVisible();
+		await expect(page.getByRole("button", { name: "+" })).toBeVisible();
 	});
 });
 
-// @ts-check
-// const { test, expect } = require('@playwright/test');
+test.describe("Todo item", () => {
+	test("todo item should appear in todo item container", async ({ page }) => {
+		await page.goto("http://localhost:3000");
 
-// test('has title', async ({ page }) => {
-//   await page.goto('https://playwright.dev/');
+		// Add a todo item
+		await page.fill('input[placeholder="Add your todo here"]', "Buy groceries");
+		await page.click("button");
 
-//   // Expect a title "to contain" a substring.
-//   await expect(page).toHaveTitle(/Playwright/);
-// });
+		// Check if todo item displayed in the container
+		const todoItem = page.locator(".todo-items-container .todo-item");
+		await expect(todoItem).toHaveText("Buy groceries");
 
-// test('get started link', async ({ page }) => {
-//   await page.goto('https://playwright.dev/');
+		// Check if existing todo has triggered text in progress indicator
+		const progressIndicator = page.locator(".progress-indicator");
+		const tasksCompletedText = page.locator(".progress-indicator-text");
 
-//   // Click the get started link.
-//   await page.getByRole('link', { name: 'Get started' }).click();
-
-//   // Expects page to have a heading with the name of Installation.
-//   await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-// });
+		await expect(tasksCompletedText)
+			.toBeVisible();
+	});
+});

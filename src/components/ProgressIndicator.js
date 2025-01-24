@@ -27,6 +27,7 @@ function ProgressIndicator({
 						fontSize="12"
 						fill="#905b27"
 						fontWeight={600}
+						className = "progress-indicator-text"
 					>
 						<tspan
 							x={svgSize / 2}
