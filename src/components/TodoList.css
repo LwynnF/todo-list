@@ -1,0 +1,57 @@
+.todo-items-container {
+	background: #ccd5ae;
+	border: 1px solid #ccd5ae;
+	border-radius: 12px;
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+	margin-top: 20px;
+	max-width: 650px;
+}
+
+
+h1 {
+	color: #ccd5ae;
+	letter-spacing: 2px;
+}
+
+input {
+	margin-bottom: 8px;
+	border: solid 1px #ccd5ae;
+	border-radius: 12px;
+}
+
+input
+ {
+	background-color: #e9edc9;
+	color: #905b27;
+	font-size: 14px;
+	padding: 8px;
+}
+
+input:focus {
+	outline-color: #ccd5ae;
+}
+
+::placeholder {
+	color: #905b27;
+	font-size: 14px;
+}
+
+
+
+button.add {
+	font-size: 17px;
+	font-weight: bold;
+	color:#905b27;
+	padding: 6px 16px;
+	border: solid 1px #ccd5ae;
+	border-radius: 12px;
+	margin-left: 8px;
+	background-color: #e9edc9;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
