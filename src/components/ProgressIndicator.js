@@ -10,13 +10,14 @@ function ProgressIndicator({
 	const svgSize = 2 * radius + 20; // Add some padding for stroke width so text does not touch edge
 
 	return (
-		<div className="progress-indicator">
+		<div className="progress-indicator" style={{ marginTop: "10px" }}>
 			{totalTodos > 0 && (
 				<svg
 					width={svgSize}
 					height={svgSize}
 					textAnchor="middle"
 					dominantBaseline="middle"
+	
 				>
 					<text
 						x={svgSize / 2}
