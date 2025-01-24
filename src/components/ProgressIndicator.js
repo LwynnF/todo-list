@@ -7,7 +7,7 @@ function ProgressIndicator({
 }) {
 	const radius = 50;
 	const circumference = 2 * Math.PI * radius;
-	const svgSize = 2 * radius + 20; // Add some padding for stroke width
+	const svgSize = 2 * radius + 20; // Add some padding for stroke width so text does not touch edge
 
 	return (
 		<div className="progress-indicator">
