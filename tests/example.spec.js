@@ -4,7 +4,6 @@ test.describe("Todo input", () => {
 	test("should have correct metadata and elements", async ({ page }) => {
 		await page.goto("http://localhost:3000");
 		await expect(page).toHaveTitle("Todo List");
-		// await expect(page).toHaveSelector("h1", { text: "To do list" });
 		await expect(
 			page.getByRole("heading", {
 				name: "To do list",
@@ -15,7 +14,7 @@ test.describe("Todo input", () => {
 	});
 });
 
-test.describe("Todo item", () => {
+test.describe("Todo item & progress indicator", () => {
 	test("todo item should appear in todo item container", async ({ page }) => {
 		await page.goto("http://localhost:3000");
 
@@ -28,10 +27,8 @@ test.describe("Todo item", () => {
 		await expect(todoItem).toHaveText("Buy groceries");
 
 		// Check if existing todo has triggered text in progress indicator
-		const progressIndicator = page.locator(".progress-indicator");
 		const tasksCompletedText = page.locator(".progress-indicator-text");
 
-		await expect(tasksCompletedText)
-			.toBeVisible();
+		await expect(tasksCompletedText).toBeVisible();
 	});
 });

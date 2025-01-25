@@ -10,17 +10,21 @@ function ToDoList() {
 	const [editId, setEditId] = useState(null);
 	const [todo, setTodo] = useState([]);
 	const [todoItem, setTodoItem] = useState("");
+	const [isButtonDisabled, setButtonDisabled] = useState(false);
 
 	// Calculating the no. completed tasks for progress indicator
-const completedTodos = todo.filter(task => task.isCompleted).length;
-
+	const completedTodos = todo.filter((task) => task.isCompleted).length;
 	const totalTodos = todo.length;
 
 	const completedPercentage =
 		totalTodos > 0 ? (completedTodos / totalTodos) * 100 : 0;
-		console.log(completedPercentage);
+	console.log(completedPercentage);
 
 	function addTodo() {
+		if (todoItem.trim() === "") {
+			alert("Please enter a task before adding")
+			return;
+		};
 		// If editId is not null, then we are editing an existing task
 		if (editId !== null) {
 			setTodo(
@@ -42,6 +46,12 @@ const completedTodos = todo.filter(task => task.isCompleted).length;
 		setTodo([...todo, newTodo]);
 		setNextId(nextId + 1);
 		setTodoItem(""); // Clear the input field
+	}
+
+	function validateInput(e) {
+		const value = e.target.value;
+		setTodoItem(value);
+		setButtonDisabled(value.trim() === "");
 	}
 
 	function deleteTodo(id) {
@@ -72,35 +82,41 @@ const completedTodos = todo.filter(task => task.isCompleted).length;
 				<input
 					type="text"
 					value={todoItem}
-					onChange={(e) => setTodoItem(e.target.value)}
+					onChange={validateInput}
 					placeholder="Add your todo here"
 					onKeyDown={(e) => {
-						if (e.key === "Enter") addTodo();
+						if (e.key === "Enter" && !isButtonDisabled) addTodo();
 					}}
 				/>
 				<button
 					className="add"
 					onClick={addTodo}
+					disabled={isButtonDisabled}
 				>
 					+
 				</button>
 			</div>
 			<div className="todo-items-container">
-				<ProgressIndicator completedPercentage={completedPercentage} completedTodos={completedTodos} totalTodos={totalTodos}/>
-				
-				
-					{todo.map((task) => (
-						<TodoItem
-							key={task.id}
-							task={task}
-							deleteTodo={deleteTodo}
-							editTodo={editTodo}
-							toggleCompleted={toggleCompleted}
-						/>
-					))}
-				
-					<Message completedTodos={completedTodos} totalTodos={totalTodos}/>
-			
+				<ProgressIndicator
+					completedPercentage={completedPercentage}
+					completedTodos={completedTodos}
+					totalTodos={totalTodos}
+				/>
+
+				{todo.map((task) => (
+					<TodoItem
+						key={task.id}
+						task={task}
+						deleteTodo={deleteTodo}
+						editTodo={editTodo}
+						toggleCompleted={toggleCompleted}
+					/>
+				))}
+
+				<Message
+					completedTodos={completedTodos}
+					totalTodos={totalTodos}
+				/>
 			</div>
 		</div>
 	);
