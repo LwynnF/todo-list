@@ -30,8 +30,18 @@ test.describe("Todo item & progress indicator", () => {
 		const tasksCompletedText = page.locator(".progress-indicator-text");
 		await expect(tasksCompletedText).toBeVisible();
 
+		// Edit a todo item using enter key
+		await page.getByRole("button", { name: "edit" }).click();
+		await page.fill(
+			'input[placeholder="Add your todo here"]',
+			"Buy groceries edit"
+		);
+		await page.press('input[placeholder="Add your todo here"]', "Enter");
+
+		await expect(todoItem).toHaveText("Buy groceries edit");
+
 		// Delete a todo item
-		await page.getByRole("button", {name: "delete"}).click();
+		await page.getByRole("button", { name: "delete" }).click();
 		await expect(todoItem).not.toBeVisible();
 	});
 });

@@ -30,6 +30,7 @@ function TodoItem({ task, deleteTodo, editTodo, toggleCompleted }) {
 
 					{/* Add edit function in todolist.js */}
 					<button className="edit"
+					aria-label="edit"
 					onClick={() => editTodo(task.id, task.task)}>
 						<FontAwesomeIcon icon={faPenToSquare} /> 
 					</button>
