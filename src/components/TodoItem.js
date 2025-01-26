@@ -22,6 +22,7 @@ function TodoItem({ task, deleteTodo, editTodo, toggleCompleted }) {
 				<div>
 					<button
 						className="trash"
+						aria-label="delete"
 						onClick={() => deleteTodo(task.id)}
 					>
 						<FontAwesomeIcon icon={faTrash} />

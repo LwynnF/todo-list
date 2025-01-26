@@ -20,7 +20,7 @@ test.describe("Todo item & progress indicator", () => {
 
 		// Add a todo item
 		await page.fill('input[placeholder="Add your todo here"]', "Buy groceries");
-		await page.click("button");
+		await page.getByRole("button", { name: "+" }).click();
 
 		// Check if todo item displayed in the container
 		const todoItem = page.locator(".todo-items-container .todo-item");
@@ -28,7 +28,10 @@ test.describe("Todo item & progress indicator", () => {
 
 		// Check if existing todo has triggered text in progress indicator
 		const tasksCompletedText = page.locator(".progress-indicator-text");
-
 		await expect(tasksCompletedText).toBeVisible();
+
+		// Delete a todo item
+		await page.getByRole("button", {name: "delete"}).click();
+		await expect(todoItem).not.toBeVisible();
 	});
 });
