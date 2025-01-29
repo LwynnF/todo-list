@@ -15,6 +15,7 @@ function TodoItem({ task, deleteTodo, editTodo, toggleCompleted }) {
 				<input
 				className ="checkbox"
 					type="checkbox"
+					aria-label="checkbox"
 					checked={task.isCompleted}
 					onChange={handleChange}
 				/>
@@ -28,7 +29,6 @@ function TodoItem({ task, deleteTodo, editTodo, toggleCompleted }) {
 						<FontAwesomeIcon icon={faTrash} />
 					</button>
 
-					{/* Add edit function in todolist.js */}
 					<button className="edit"
 					aria-label="edit"
 					onClick={() => editTodo(task.id, task.task)}>
