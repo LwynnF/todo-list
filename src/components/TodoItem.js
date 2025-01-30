@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
-function TodoItem({ task, deleteTodo, editTodo, toggleCompleted }) {
+function TodoItem({ task, toggleCompleted, deleteTodo, editTodo }) {
 	function handleChange() {
 		toggleCompleted(task.id);
 	}
@@ -13,7 +13,7 @@ function TodoItem({ task, deleteTodo, editTodo, toggleCompleted }) {
 		<div className="todo-item-container">
 			<div className="todo-item">
 				<input
-				className ="checkbox"
+					className="checkbox"
 					type="checkbox"
 					aria-label="checkbox"
 					checked={task.isCompleted}
@@ -29,10 +29,12 @@ function TodoItem({ task, deleteTodo, editTodo, toggleCompleted }) {
 						<FontAwesomeIcon icon={faTrash} />
 					</button>
 
-					<button className="edit"
-					aria-label="edit"
-					onClick={() => editTodo(task.id, task.task)}>
-						<FontAwesomeIcon icon={faPenToSquare} /> 
+					<button
+						className="edit"
+						aria-label="edit"
+						onClick={() => editTodo(task.id, task.task)}
+					>
+						<FontAwesomeIcon icon={faPenToSquare} />
 					</button>
 				</div>
 			</div>

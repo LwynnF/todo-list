@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import TodoItem from "./TodoItem";
 import Message from "./Message";
 import ProgressIndicator from "./ProgressIndicator";
@@ -12,6 +13,19 @@ function ToDoList() {
 	const [todoItem, setTodoItem] = useState("");
 	const [isButtonDisabled, setButtonDisabled] = useState(false);
 
+	// Fetch todos from the backend when the component mounts
+	useEffect(() => {
+		async function fetchTodos() {
+			try {
+				const response = await axios.get("http://localhost:4000/todos");
+				setTodo(response.data);
+			} catch (error) {
+				console.error("Error fetching todos:", error);
+			}
+		}
+		fetchTodos();
+	}, []);
+
 	// Calculating the no. completed tasks for progress indicator
 	const completedTodos = todo.filter((task) => task.isCompleted).length;
 	const totalTodos = todo.length;
@@ -20,32 +34,64 @@ function ToDoList() {
 		totalTodos > 0 ? (completedTodos / totalTodos) * 100 : 0;
 	console.log(completedPercentage);
 
-	function addTodo() {
+	async function addTodo() {
 		if (todoItem.trim() === "") {
-			alert("Please enter a task before adding")
+			alert("Please enter a task before adding");
 			return;
-		};
+		}
+
 		// If editId is not null, then we are editing an existing task
 		if (editId !== null) {
-			setTodo(
-				todo.map((task) =>
-					task.id === editId ? { ...task, task: todoItem } : task
-				)
-			);
-			setEditId(null); // Reset editId to null
-			setTodoItem(""); // Clear the input field
+			try {
+				const response = await axios.put(
+					`http://localhost:4000/todos/${editId}`,
+					{
+						task: todoItem,
+					}
+				);
+				setTodo(
+					todo.map((task) =>
+						task.id === editId ? { ...task, task: todoItem } : task
+					)
+				);
+				setEditId(null); // Reset editId to null
+				setTodoItem(""); // Clear the input field
+			} catch (error) {
+				console.error("Error updating todo:", error);
+			}
 			return; // Exit the function to prevent adding a new item
 		}
 
-		// Otherwise add a new task
-		const newTodo = {
-			id: nextId,
-			task: todoItem,
-			isCompleted: false,
-		};
-		setTodo([...todo, newTodo]);
-		setNextId(nextId + 1);
-		setTodoItem(""); // Clear the input field
+		try {
+			const response = await axios.post("http://localhost:4000/todos", {
+				task: todoItem,
+				isCompleted: false,
+			});
+			const newTodo = response.data;
+			setTodo([...todo, newTodo]);
+			setNextId(nextId + 1);
+			setTodoItem(""); // Clear the input field
+		} catch (error) {
+			console.error("Error adding todo:", error);
+		}
+	}
+
+	async function toggleCompleted(id) {
+		const updatedTodo = todo.find((task) => task.id === id);
+		updatedTodo.isCompleted = !updatedTodo.isCompleted;
+
+		try {
+			await axios.put(`http://localhost:4000/todos/${id}`, updatedTodo);
+			setTodo(
+				todo.map((task) =>
+					task.id === id
+						? { ...task, isCompleted: updatedTodo.isCompleted }
+						: task
+				)
+			);
+		} catch (error) {
+			console.error("Error updating todo:", error);
+		}
 	}
 
 	function validateInput(e) {
@@ -54,30 +100,23 @@ function ToDoList() {
 		setButtonDisabled(value.trim() === "");
 	}
 
-	function deleteTodo(id) {
-		setTodo(todo.filter((task) => task.id !== id));
+	async function deleteTodo(id) {
+		try {
+			await axios.delete(`http://localhost:4000/todos/${id}`);
+			setTodo(todo.filter((task) => task.id !== id));
+		} catch (error) {
+			console.error("Error deleting todo:", error);
+		}
 	}
 
-	function editTodo(id, task) {
+	async function editTodo(id, task) {
 		setEditId(id); // Set the id of the item being edited
 		setTodoItem(task); // Set the current task value to the input field
 	}
 
-	function toggleCompleted(id) {
-		setTodo(
-			todo.map((task) => {
-				if (task.id === id) {
-					return { ...task, isCompleted: !task.isCompleted }; // Sets isCompleted to the opposite of what it currently is
-				} else {
-					return task;
-				}
-			})
-		);
-	}
-
 	return (
 		<div className="todo-list">
-			<h1>To do list</h1>
+			<h1>To Do List</h1>
 			<div className="input-button-container">
 				<input
 					type="text"
@@ -121,4 +160,5 @@ function ToDoList() {
 		</div>
 	);
 }
+
 export default ToDoList;
