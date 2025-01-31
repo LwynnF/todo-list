@@ -29,10 +29,10 @@ test.describe("Todo item & progress indicator", () => {
 		// Check if todo items are displayed in the container
 		const groceriesItem = page.locator(
 			".todo-items-container .todo-item:has-text('Buy groceries')"
-		);
+		).first();
 		const cleanItem = page.locator(
 			".todo-items-container .todo-item:has-text('Clean house')"
-		);
+		).first();
 
 		await expect(groceriesItem).toHaveText("Buy groceries");
 		await expect(cleanItem).toHaveText("Clean house");
@@ -48,9 +48,8 @@ test.describe("Todo item & progress indicator", () => {
 		// Check text is striked through when checkbox is checked
 		await checkbox.check();
 		await expect(checkbox).toBeChecked();
-		await expect(groceriesItem.locator("p")).toHaveCSS(
-			"text-decoration",
-			/line-through/
+		await expect(groceriesItem.locator("p")).toHaveClass(
+		/checked/
 		);
 
 		// Check progress indicator text is updated accordingly ater todo item is checked

@@ -9,7 +9,6 @@ const port = 4000;
 app.use(cors());
 app.use(cors({ origin: "http://localhost:3000" }));
 
-
 // Initialise Sequelize(PostgreSQL connection)
 const sequelize = new Sequelize("todos", "postgres", "postdb", {
 	host: "localhost",
@@ -34,9 +33,11 @@ app.use(express.json());
 // Test connection and sync models
 sequelize
 	.authenticate()
-	.then(() => {
+	.then(async () => {
 		console.log("Connected to PostgreSQL");
-		return sequelize.sync();
+		await sequelize.sync();
+
+		// Clear todo table when app is refreshed
 	})
 	.catch((err) => console.error("Connection failed", err));
 
@@ -88,11 +89,9 @@ app.delete("/todos/:id", async (req, res) => {
 		console.error(err);
 		res.status(500).json({ error: "Internal Server Error" });
 	}
-	res.json({ message: "Todo successfully deleted" });
 });
 
 // Start server
-
 app.listen(port, () => {
 	console.log(`Server is running on port ${port}`);
 });
