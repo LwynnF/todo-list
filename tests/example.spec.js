@@ -15,7 +15,7 @@ test.describe("Todo input", () => {
 });
 
 test.describe("Todo item & progress indicator", () => {
-	test.beforeEach(async ({ page }) => {
+	test.afterEach(async ({ page }) => {
 		// Clear all test todos before each test
 		await page.goto("http://localhost:3000");
 		await page.evaluate(async () => {
