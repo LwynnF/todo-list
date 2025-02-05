@@ -1,12 +1,20 @@
 const express = require("express");
 const cors = require("cors");
+const sequelize = require("./config/db");
+const todoRoutes = require("./routes/todoRoutes");
 
 const app = express();
+
 app.use(cors());
-
-// Enabling CORS to allow requests from local host 3000
-app.use(cors({ origin: "http://localhost:3000" }));
-
 app.use(express.json());
+app.use("/api", todoRoutes);
+
+sequelize
+	.authenticate()
+	.then(async () => {
+		console.log("Connected to PostgreSQL");
+		await sequelize.sync();
+	})
+	.catch((err) => console.error("Connection failed", err));
 
 module.exports = app;

@@ -6,25 +6,33 @@ import ProgressIndicator from "./ProgressIndicator";
 import "./TodoList.css";
 
 // Manages state and renders list of todoitem components
-function ToDoList() {
+function TodoList() {
 	const [nextId, setNextId] = useState(1);
 	const [editId, setEditId] = useState(null);
 	const [todo, setTodo] = useState([]);
 	const [todoItem, setTodoItem] = useState("");
 	const [isButtonDisabled, setButtonDisabled] = useState(false);
 
+	const apiUrl = process.env.REACT_APP_API_URL;
+	console.log("API url:", process.env.REACT_APP_API_URL);
+	console.log("All env variables:", process.env); // Check if REACT_APP_API_URL is listed here
+
+	if (!apiUrl) {
+		console.error("API URL is not defined");
+	}
+
 	// Fetch todos from the backend when the component mounts
 	useEffect(() => {
 		async function fetchTodos() {
 			try {
-				const response = await axios.get("http://localhost:4000/todos");
+				const response = await axios.get(`${apiUrl}/todos`);
 				setTodo(response.data);
 			} catch (error) {
 				console.error("Error fetching todos:", error);
 			}
 		}
 		fetchTodos();
-	}, []);
+	}, [apiUrl]);
 
 	// Calculating the no. completed tasks for progress indicator
 	const completedTodos = todo.filter((task) => task.isCompleted).length;
@@ -43,12 +51,9 @@ function ToDoList() {
 		// If editId is not null, then we are editing an existing task
 		if (editId !== null) {
 			try {
-				const response = await axios.put(
-					`http://localhost:4000/todos/${editId}`,
-					{
-						task: todoItem,
-					}
-				);
+				const response = await axios.put(`${apiUrl}/todos/${editId}`, {
+					task: todoItem,
+				});
 				setTodo(
 					todo.map((task) =>
 						task.id === editId ? { ...task, task: todoItem } : task
@@ -63,7 +68,7 @@ function ToDoList() {
 		}
 
 		try {
-			const response = await axios.post("http://localhost:4000/todos", {
+			const response = await axios.post(`${apiUrl}/todos`, {
 				task: todoItem,
 				isCompleted: false,
 			});
@@ -81,7 +86,7 @@ function ToDoList() {
 		updatedTodo.isCompleted = !updatedTodo.isCompleted;
 
 		try {
-			await axios.put(`http://localhost:4000/todos/${id}`, updatedTodo);
+			await axios.put(`${apiUrl}/todos/${id}`, updatedTodo);
 			setTodo(
 				todo.map((task) =>
 					task.id === id
@@ -102,7 +107,7 @@ function ToDoList() {
 
 	async function deleteTodo(id) {
 		try {
-			await axios.delete(`http://localhost:4000/todos/${id}`);
+			await axios.delete(`${apiUrl}/todos/${id}`);
 			setTodo(todo.filter((task) => task.id !== id));
 		} catch (error) {
 			console.error("Error deleting todo:", error);
@@ -161,4 +166,4 @@ function ToDoList() {
 	);
 }
 
-export default ToDoList;
+export default TodoList;
