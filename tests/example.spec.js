@@ -75,13 +75,23 @@ test.describe("Todo item & progress indicator", () => {
 		await expect(groceriesItem.locator("p")).toHaveClass(/checked/);
 
 		// Check progress indicator text is updated accordingly after todo item is checked
+		const testTodos = page.locator('.todo-item:has-text("TEST:")');
+
+		// Only count test todos
+		const testTodosCount = await testTodos.count();
+
+		// Locate completed test todos
+		const completedTestTodos = await testTodos
+			.locator('input[type="checkbox"]:checked')
+			.count();
+
 		const tasksCompletedTextP1 = page.locator(
 			".progress-indicator-text tspan:nth-of-type(1)"
 		);
 		const tasksCompletedTextP2 = page.locator(
 			".progress-indicator-text tspan:nth-of-type(2)"
 		);
-		await expect(tasksCompletedTextP1).toHaveText("1/2 tasks");
+		await expect(tasksCompletedTextP1).toHaveText(`${completedTestTodos}/${testTodosCount} tasks`);
 		await expect(tasksCompletedTextP2).toHaveText("completed");
 
 		// Edit a specific todo item using enter key
