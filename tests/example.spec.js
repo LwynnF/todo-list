@@ -15,18 +15,16 @@ test.describe("Todo input", () => {
 });
 
 test.describe("Todo item & progress indicator", () => {
-	test.afterEach(async ({ page }) => {
+	test.beforeEach(async ({ page }) => {
 		// Clear all test todos before each test
 		await page.goto("http://localhost:3000");
 		await page.evaluate(async () => {
 			const response = await fetch("http://localhost:4000/todos");
 			const todos = await response.json();
 			for (const todo of todos) {
-				if (todo.task.startsWith("TEST:")) {
-					await fetch(`http://localhost:4000/todos/${todo.id}`, {
-						method: "DELETE",
-					});
-				}
+				await fetch(`http://localhost:4000/todos/${todo.id}`, {
+					method: "DELETE",
+				});
 			}
 		});
 	});
