@@ -1,4 +1,4 @@
-const Todo = require("../model/todoModel");
+const { Todo } = require("../model/todoModel");
 
 // API endpoints for CRUD operations
 
@@ -8,7 +8,7 @@ exports.createTodo = async (req, res) => {
 		const todo = await Todo.create(req.body);
 		res.status(201).json(todo);
 	} catch (err) {
-		res.status(500).json({ error: "Internal server error" });
+		res.status(500).json({ error: `Internal server error: ${err}` });
 	}
 };
 
@@ -18,7 +18,17 @@ exports.getAllTodos = async (req, res) => {
 		const todo = await Todo.findAll();
 		res.status(200).json(todo);
 	} catch (err) {
-		res.status(500).json({ error: "Internal server error" });
+		res.status(500).json({ error: `Internal server error: ${err}` });
+	}
+};
+
+// Read (GET) todo by id
+exports.getTodo = async (req, res) => {
+	try {
+		const todo = await Todo.findByPk(req.params.id);
+		res.status(200).json(todo);
+	} catch (err) {
+		res.status(500).json({ error: `Internal server error: ${err}` });
 	}
 };
 
@@ -44,7 +54,6 @@ exports.deleteTodo = async (req, res) => {
 		await todo.destroy();
 		res.status(204).send();
 	} catch (err) {
-		res.status(500).json({ error: "Internal Server Error" });
+		res.status(500).json({ error: `Internal server error: ${err}` });
 	}
 };
-

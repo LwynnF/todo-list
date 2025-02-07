@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const sequelize = require("./config/db");
+const { sequelize } = require("./model/todoModel");
 const todoRoutes = require("./routes/todoRoutes");
 
 const app = express();
@@ -13,7 +13,9 @@ sequelize
 	.authenticate()
 	.then(async () => {
 		console.log("Connected to PostgreSQL");
-		await sequelize.sync();
+		await sequelize.sync().then(() => {
+			console.log("Database synced");
+		});
 	})
 	.catch((err) => console.error("Connection failed", err));
 

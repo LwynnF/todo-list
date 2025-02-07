@@ -64,20 +64,19 @@ function TodoList() {
 			} catch (error) {
 				console.error("Error updating todo:", error);
 			}
-			return; // Exit the function to prevent adding a new item
-		}
-
-		try {
-			const response = await axios.post(`${apiUrl}/todos`, {
-				task: todoItem,
-				isCompleted: false,
-			});
-			const newTodo = response.data;
-			setTodo([...todo, newTodo]);
-			setNextId(nextId + 1);
-			setTodoItem(""); // Clear the input field
-		} catch (error) {
-			console.error("Error adding todo:", error);
+		} else {
+			try {
+				const response = await axios.post(`${apiUrl}/todos`, {
+					task: todoItem,
+					isCompleted: false,
+				});
+				const newTodo = response.data;
+				setTodo([...todo, newTodo]);
+				setNextId(nextId + 1);
+				setTodoItem(""); // Clear the input field
+			} catch (error) {
+				console.error("Error adding todo:", error);
+			}
 		}
 	}
 
