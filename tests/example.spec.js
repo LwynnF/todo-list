@@ -15,16 +15,18 @@ test.describe("Todo input", () => {
 });
 
 test.describe("Todo item & progress indicator", () => {
-	test.beforeEach(async ({ page }) => {
+	test.afterEach(async ({ page }) => {
 		// Clear all test todos before each test
 		await page.goto("http://localhost:3000");
 		await page.evaluate(async () => {
-			const response = await fetch("http://localhost:4000/todos");
+			const response = await fetch("http://localhost:4000/api/todos");
 			const todos = await response.json();
 			for (const todo of todos) {
-				await fetch(`http://localhost:4000/todos/${todo.id}`, {
-					method: "DELETE",
-				});
+				if (todo.task.startsWith("TEST: ")) {
+					await fetch(`http://localhost:4000/api/todos/${todo.id}`, {
+						method: "DELETE",
+					});
+				}
 			}
 		});
 	});
@@ -75,13 +77,12 @@ test.describe("Todo item & progress indicator", () => {
 		await expect(groceriesItem.locator("p")).toHaveClass(/checked/);
 
 		// Check progress indicator text is updated accordingly after todo item is checked
-		const testTodos = page.locator('.todo-item:has-text("TEST:")');
-
 		// Only count test todos
-		const testTodosCount = await testTodos.count();
+		const todosCount = await page.locator(".todo-item").count();
 
 		// Locate completed test todos
-		const completedTestTodos = await testTodos
+		const completedTodos = await page
+			.locator(".todo-item")
 			.locator('input[type="checkbox"]:checked')
 			.count();
 
@@ -91,7 +92,9 @@ test.describe("Todo item & progress indicator", () => {
 		const tasksCompletedTextP2 = page.locator(
 			".progress-indicator-text tspan:nth-of-type(2)"
 		);
-		await expect(tasksCompletedTextP1).toHaveText(`${completedTestTodos}/${testTodosCount} tasks`);
+		await expect(tasksCompletedTextP1).toHaveText(
+			`${completedTodos}/${todosCount} tasks`
+		);
 		await expect(tasksCompletedTextP2).toHaveText("completed");
 
 		// Edit a specific todo item using enter key
@@ -107,7 +110,7 @@ test.describe("Todo item & progress indicator", () => {
 		await expect(groceriesItem).toHaveText("TEST: Buy groceries edit");
 
 		// Delete a todo item
-		// await groceriesItem.locator('button[aria-label="delete"]').click();
-		// await expect(groceriesItem).not.toBeVisible();
+		await groceriesItem.locator('button[aria-label="delete"]').click();
+		await expect(groceriesItem).not.toBeVisible();
 	});
 });
