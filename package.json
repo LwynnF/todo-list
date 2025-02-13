@@ -46,7 +46,10 @@
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.49.1",
+		"@types/jest": "^29.5.14",
 		"@types/node": "^22.10.6",
-		"concurrently": "^9.1.2"
+		"@types/supertest": "^6.0.2",
+		"concurrently": "^9.1.2",
+		"jest": "^27.5.1"
 	}
 }
