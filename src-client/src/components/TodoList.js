@@ -15,7 +15,7 @@ function TodoList() {
 
 	const apiUrl = process.env.REACT_APP_API_URL;
 	console.log("API url:", process.env.REACT_APP_API_URL);
-	console.log("All env variables:", process.env); // Check if REACT_APP_API_URL is listed here
+	console.log("All env variables:", process.env);
 
 	if (!apiUrl) {
 		console.error("API URL is not defined");
@@ -34,7 +34,6 @@ function TodoList() {
 		fetchTodos();
 	}, [apiUrl]);
 
-	// Calculating the no. completed tasks for progress indicator
 	const completedTodos = todo.filter((task) => task.isCompleted).length;
 	const totalTodos = todo.length;
 
@@ -59,8 +58,8 @@ function TodoList() {
 						task.id === editId ? { ...task, task: todoItem } : task
 					)
 				);
-				setEditId(null); // Reset editId to null
-				setTodoItem(""); // Clear the input field
+				setEditId(null);
+				setTodoItem("");
 			} catch (error) {
 				console.error("Error updating todo:", error);
 			}
@@ -73,7 +72,7 @@ function TodoList() {
 				const newTodo = response.data;
 				setTodo([...todo, newTodo]);
 				setNextId(nextId + 1);
-				setTodoItem(""); // Clear the input field
+				setTodoItem("");
 			} catch (error) {
 				console.error("Error adding todo:", error);
 			}
@@ -114,8 +113,8 @@ function TodoList() {
 	}
 
 	async function editTodo(id, task) {
-		setEditId(id); // Set the id of the item being edited
-		setTodoItem(task); // Set the current task value to the input field
+		setEditId(id);
+		setTodoItem(task);
 	}
 
 	return (

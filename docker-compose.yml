@@ -1,53 +1,48 @@
 services:
-  front-end:
-    build:
-      context: ./src-client
-      dockerfile: Dockerfile.client
-    ports:
-      - "3002:80"
-    depends_on:
-      - back-end
-
-  back-end:
-    build:
-      context: ./
-      dockerfile: ./src-server/Dockerfile.server
-    ports:
-      - "3003:80"
-    environment:
-      - DATABASE_URL=postgres://postgres:postdb@db:5432/Todos
-    depends_on:
-      - db
-
   db:
     image: postgres:17
     restart: always
+    container_name: postgres
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postdb
       - POSTGRES_DB=Todos
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - ./postgresql/data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
+    expose:
+      - "5432"
 
-  nginx:
+  back-end:
     build:
-      context: nginx
-    container_name: nginx
-    restart: always
-    tty: true
+      context: ./src-server
+      dockerfile: Dockerfile.server
     ports:
-      - "8000:80"
-    networks:
-      - node-network
+      - "3003:3001"
+    environment:
+      - DB_TABLE=Todos
+      - DB_USER=postgres
+      - DB_PASSWORD=postdb
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - REACT_APP_API_URL=http://localhost:3003/api
+    depends_on:
+      - db
+
+  front-end:
+    build:
+      context: ./src-client
+      dockerfile: Dockerfile.client
+    ports:
+      - "3002:3000"
+    command: npm run serve
     depends_on:
       - back-end
-      - front-end
-
-networks:
-  node-network:
-    driver: bridge
 
 volumes:
-  db-data:
+  postgresql:
+
+networks:
+  default:
+    name: postgresql_default

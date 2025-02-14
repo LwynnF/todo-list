@@ -7,7 +7,8 @@
 		"start": "PORT=3000 react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"serve": "PORT=3000 serve -s build"
 	},
 	"keywords": [],
 	"author": "",
@@ -16,10 +17,10 @@
 		"@fortawesome/free-solid-svg-icons": "^6.7.2",
 		"@fortawesome/react-fontawesome": "^0.2.2",
 		"axios": "^1.7.9",
+		"dotenv": "^16.4.7",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"react-scripts": "5.0.1",
-		"dotenv": "^16.4.7",
 		"web-vitals": "^4.2.4"
 	},
 	"devDependencies": {
