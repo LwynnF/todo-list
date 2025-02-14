@@ -19,14 +19,13 @@ services:
       context: ./src-server
       dockerfile: Dockerfile.server
     ports:
-      - "3003:3001"
+      - "3001:3001"
     environment:
       - DB_TABLE=Todos
       - DB_USER=postgres
       - DB_PASSWORD=postdb
       - DB_HOST=postgres
       - DB_PORT=5432
-      - REACT_APP_API_URL=http://localhost:3003/api
     depends_on:
       - db
 
@@ -35,9 +34,9 @@ services:
       context: ./src-client
       dockerfile: Dockerfile.client
     environment:
-      - REACT_APP_API_URL=http://localhost:3003/api
+      - REACT_APP_API_URL=http://localhost:3001/api
     ports:
-      - "3002:3000"
+      - "3000:3000"
     command: npm run start
     depends_on:
       - back-end

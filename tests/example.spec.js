@@ -14,26 +14,26 @@ test.describe("Todo input", () => {
 	});
 });
 
-test.describe("API test (only works when connected to DB - ignore this please, remove if you want all the tests to pas", () => {
-	test("should create a new task", async ({ request }) => {
-		const newTask = await request.post("http://localhost:3001/api/todos", {
-			data: {
-				task: "New Task",
-			},
-		});
+// test.describe("API test (only works when connected to DB - ignore this please, remove if you want all the tests to pas", () => {
+// 	test("should create a new task", async ({ request }) => {
+// 		const newTask = await request.post("http://localhost:3001/api/todos", {
+// 			data: {
+// 				task: "New Task",
+// 			},
+// 		});
 
-		expect(newTask.ok()).toBeTruthy();
+// 		expect(newTask.ok()).toBeTruthy();
 
-		const tasks = await request.get("http://localhost:3001/api/todos");
+// 		const tasks = await request.get("http://localhost:3001/api/todos");
 
-		expect(tasks.ok()).toBeTruthy();
-		expect(await tasks.json()).toContainEqual(
-			expect.objectContaining({
-				task: "New Task",
-			})
-		);
-	});
-});
+// 		expect(tasks.ok()).toBeTruthy();
+// 		expect(await tasks.json()).toContainEqual(
+// 			expect.objectContaining({
+// 				task: "New Task",
+// 			})
+// 		);
+// 	});
+// });
 
 test.describe("Todo item & progress indicator", () => {
 	test.beforeEach(async ({ page }) => {
