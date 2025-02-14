@@ -3,25 +3,18 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
-		"@fortawesome/free-solid-svg-icons": "^6.7.2",
-		"@fortawesome/react-fontawesome": "^0.2.2",
-		"axios": "^1.7.9",
 		"body-parser": "^1.20.3",
 		"cors": "^2.8.5",
 		"dotenv": "^16.4.7",
 		"pg": "^8.13.1",
 		"pg-hstore": "^2.3.4",
-		"react": "^19.0.0",
-		"react-dom": "^19.0.0",
-		"react-script": "^2.0.5",
-		"react-scripts": "5.0.1",
 		"sequelize": "^6.37.5",
-		"web-vitals": "^4.2.4"
+		"supertest": "^7.0.0"
 	},
 	"scripts": {
 		"start": "concurrently \"npm run server\" \"npm run client\"",
 		"build": "react-scripts build --prefix src-client",
-		"test": "react-scripts test --prefix src-client",
+		"test": "jest --config jest.config.js",
 		"eject": "react-scripts eject --prefix src-client",
 		"server": "node src-server/server.js",
 		"client": "npm start --prefix src-client"
@@ -45,6 +38,8 @@
 		]
 	},
 	"devDependencies": {
+		"@babel/preset-env": "^7.26.9",
+		"@babel/preset-react": "^7.26.3",
 		"@playwright/test": "^1.49.1",
 		"@types/jest": "^29.5.14",
 		"@types/node": "^22.10.6",

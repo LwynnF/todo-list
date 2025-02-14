@@ -1,4 +1,5 @@
-import("ts-jest").JestConfigWithTsJest;
-
-export const preset = "ts-jest";
-export const testEnvironment = "node";
+module.exports = {
+	moduleDirectories: ["node_modules"],
+	testEnvironment: "jsdom",
+	testMatch: ["**/tests/*.test.js"],
+};

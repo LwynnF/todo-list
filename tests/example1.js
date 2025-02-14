@@ -19,11 +19,11 @@ test.describe("Todo item & progress indicator", () => {
 		// Clear all test todos before each test
 		await page.goto("http://localhost:3000");
 		await page.evaluate(async () => {
-			const response = await fetch("http://localhost:5000/api/todos");
+			const response = await fetch("http://localhost:3001/api/todos");
 			const todos = await response.json();
 			for (const todo of todos) {
 				if (todo.task.startsWith("TEST: ")) {
-					await fetch(`http://localhost:5000/api/todos/${todo.id}`, {
+					await fetch(`http://localhost:3001/api/todos/${todo.id}`, {
 						method: "DELETE",
 					});
 				}
@@ -106,7 +106,7 @@ test.describe("Todo item & progress indicator", () => {
 		await page.press('input[placeholder="Add your todo here"]', "Enter");
 
 		// Wait for the state to update after the edit action
-		await page.waitForTimeout(5000);
+		await page.waitForTimeout(3001);
 		await expect(groceriesItem).toHaveText("TEST: Buy groceries edit");
 
 		// Delete a todo item
