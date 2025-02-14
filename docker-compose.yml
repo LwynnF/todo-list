@@ -34,9 +34,11 @@ services:
     build:
       context: ./src-client
       dockerfile: Dockerfile.client
+    environment:
+      - REACT_APP_API_URL=http://localhost:3003/api
     ports:
       - "3002:3000"
-    command: npm run serve
+    command: npm run start
     depends_on:
       - back-end
 
