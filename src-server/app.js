@@ -3,6 +3,8 @@ const cors = require("cors");
 const { sequelize } = require("./model/todoModel");
 const todoRoutes = require("./routes/todoRoutes");
 
+console.log(require("dotenv").config());
+
 const app = express();
 
 app.use(cors());

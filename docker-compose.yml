@@ -26,11 +26,11 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - DB_TABLE=Todos
-      - DB_USER=postgres
-      - DB_PASSWORD=postdb
-      - DB_HOST=postgres
-      - DB_PORT=5432
+      - PG_DB=Todos
+      - PG_USER=postgres
+      - PG_PASSWORD=postdb
+      - PG_HOST=postgres
+      - PG_PORT=5432
     depends_on:
       postgres:
         condition: service_healthy

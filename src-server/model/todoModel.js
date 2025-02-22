@@ -1,12 +1,13 @@
 const { Sequelize, DataTypes } = require("sequelize");
+
 const sequelize = new Sequelize(
-	process.env.DB_TABLE,
-	process.env.DB_USER,
-	process.env.DB_PASSWORD,
+	process.env.PG_DB,
+	process.env.PG_USER,
+	process.env.PG_PASSWORD,
 	{
-		host: process.env.DB_HOST,
+		host: process.env.PG_HOST,
 		dialect: "postgres",
-		port: process.env.DB_PORT,
+		port: process.env.PG_PORT,
 	}
 );
 
